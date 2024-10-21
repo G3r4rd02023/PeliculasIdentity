@@ -67,5 +67,34 @@ namespace PeliculasIdentity.Services
         {
             await _signInManager.SignOutAsync();
         }
+
+        public async Task<Usuario> AddUserAsync(AddUserViewModel model)
+        {
+            Usuario user = new()
+            {
+                Email = model.Username,
+                Nombre = model.Nombre,
+                UserName = model.Username,
+                Rol = model.Rol
+            };
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+            if (result != IdentityResult.Success)
+            {
+                return null!;
+            }
+            Usuario newUser = await GetUserAsync(model.Username);
+            await AddUserToRoleAsync(newUser, user.Rol.ToString());
+            return newUser;
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(Usuario user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<IdentityResult> ChangePasswordAsync(Usuario user, string oldPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        }
     }
 }

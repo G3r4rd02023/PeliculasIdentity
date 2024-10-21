@@ -35,6 +35,12 @@ namespace PeliculasIdentity
             builder.Services.AddScoped<IServicioUsuario, ServicioUsuario>();
             builder.Services.AddTransient<SeedDb>();
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/NotAuthorized";
+                options.AccessDeniedPath = "/Account/NotAuthorized";
+            });
+
             var app = builder.Build();
 
             SeedData(app);
@@ -59,7 +65,7 @@ namespace PeliculasIdentity
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

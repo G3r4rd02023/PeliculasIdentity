@@ -19,5 +19,11 @@ namespace PeliculasIdentity.Services
         Task<SignInResult> LoginAsync(LoginViewModel model);
 
         Task LogoutAsync();
+
+        Task<Usuario> AddUserAsync(AddUserViewModel model);
+
+        Task<IdentityResult> UpdateUserAsync(Usuario user);
+
+        Task<IdentityResult> ChangePasswordAsync(Usuario user, string oldPassword, string newPassword);
     }
 }
