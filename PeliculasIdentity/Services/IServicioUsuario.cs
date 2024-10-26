@@ -25,5 +25,15 @@ namespace PeliculasIdentity.Services
         Task<IdentityResult> UpdateUserAsync(Usuario user);
 
         Task<IdentityResult> ChangePasswordAsync(Usuario user, string oldPassword, string newPassword);
+
+        Task<string> GenerateEmailConfirmationTokenAsync(Usuario user);
+
+        Task<IdentityResult> ConfirmEmailAsync(Usuario user, string token);
+
+        Task<Usuario> GetUserAsync(Guid userId);
+
+        Task<string> GeneratePasswordResetTokenAsync(Usuario user);
+
+        Task<IdentityResult> ResetPasswordAsync(Usuario user, string token, string password);
     }
 }

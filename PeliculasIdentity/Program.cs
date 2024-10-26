@@ -21,18 +21,23 @@ namespace PeliculasIdentity
 
             builder.Services.AddIdentity<Usuario, IdentityRole>(x =>
             {
-                //x.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
-                //x.SignIn.RequireConfirmedEmail = true;
+                x.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+                x.SignIn.RequireConfirmedEmail = true;
                 x.User.RequireUniqueEmail = true;
                 x.Password.RequireDigit = false;
                 x.Password.RequiredUniqueChars = 0;
                 x.Password.RequireLowercase = false;
                 x.Password.RequireNonAlphanumeric = false;
                 x.Password.RequireUppercase = false;
+                x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                x.Lockout.MaxFailedAccessAttempts = 3;
+                x.Lockout.AllowedForNewUsers = true;
             })
+            .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<DataContext>();
 
             builder.Services.AddScoped<IServicioUsuario, ServicioUsuario>();
+            builder.Services.AddScoped<IServicioCorreo, ServicioCorreo>();
             builder.Services.AddTransient<SeedDb>();
 
             builder.Services.ConfigureApplicationCookie(options =>

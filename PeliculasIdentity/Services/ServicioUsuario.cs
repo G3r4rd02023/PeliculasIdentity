@@ -60,7 +60,7 @@ namespace PeliculasIdentity.Services
             model.Username,
             model.Password,
             model.RememberMe,
-            false);
+            true);
         }
 
         public async Task LogoutAsync()
@@ -95,6 +95,32 @@ namespace PeliculasIdentity.Services
         public async Task<IdentityResult> ChangePasswordAsync(Usuario user, string oldPassword, string newPassword)
         {
             return await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(Usuario user, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(Usuario user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+        public async Task<Usuario> GetUserAsync(Guid userId)
+        {
+            return await _context.Users
+            .FirstOrDefaultAsync(u => u.Id == userId.ToString());
+        }
+
+        public async Task<string> GeneratePasswordResetTokenAsync(Usuario user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(Usuario user, string token, string password)
+        {
+            return await _userManager.ResetPasswordAsync(user, token, password);
         }
     }
 }

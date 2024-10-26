@@ -66,6 +66,9 @@ namespace PeliculasIdentity.Data
                 };
                 await _usuario.AddUserAsync(user, password);
                 await _usuario.AddUserToRoleAsync(user, Rol.Admin.ToString());
+
+                string token = await _usuario.GenerateEmailConfirmationTokenAsync(user);
+                await _usuario.ConfirmEmailAsync(user, token);
             }
 
             return user;
